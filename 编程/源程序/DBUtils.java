@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bean.Book;
+import bean.Record;
 import bean.User;
 
 public class DBUtils{
@@ -108,6 +109,75 @@ public class DBUtils{
 		}
 		
 		return user;
+	}
+	
+	public static void deleteUserInfo(String username){
+		String sql ="delete from test.users where username ='"+username+"'";
+		try {
+			Connection conn=getconnection();
+			Statement stmt=conn.createStatement();
+			stmt.execute(sql);
+			
+			stmt.close();
+			conn.close();
+		} catch (SQLException e) {
+		
+			e.printStackTrace();
+		}
+	}
+	public static void modifyUser(User user){
+		if(getUser(user.getUsername()).getUsername()!=null){
+			deleteUserInfo(user.getUsername());
+			insertUserInfo(user);
+		}
+	}
+	public static void modifyUserPassword(String username ,String password){
+		String sql = "update users set password= '"+password+"' where username= '"+username+"'";
+		try {
+			Connection conn=getconnection();
+			Statement stmt =conn.createStatement();
+			int rs=stmt.executeUpdate(sql);
+			
+			stmt.close();
+			conn.close();
+			if(rs>0){
+				System.out.println("change password Success "+rs);
+				
+			}else{
+				System.out.println("update fail");
+				
+			}
+			
+			stmt.close();
+			conn.close();
+		} catch (SQLException e) {
+		
+			e.printStackTrace();
+		}
+	}
+	public static void modifyUsername(String username,String newusername){
+		String sql = "update users set username= '"+newusername+"' where username= '"+username+"'";
+		try {
+			Connection conn=getconnection();
+			Statement stmt =conn.createStatement();
+			int rs=stmt.executeUpdate(sql);
+			
+			stmt.close();
+			conn.close();
+			if(rs>0){
+				System.out.println("change username Success "+rs);
+				
+			}else{
+				System.out.println("update fail");
+				
+			}
+			
+			stmt.close();
+			conn.close();
+		} catch (SQLException e) {
+		
+			e.printStackTrace();
+		}
 	}
 	
 	//-------------------------------------------------book----------------
@@ -208,4 +278,58 @@ public class DBUtils{
 		
 	}
 
+
+	public static List<Record> getAllRecord(String name){
+		List <Record> list = new ArrayList<Record>();
+		
+		String sql = "select *  from records where userName='"+name+"'";
+		Connection conn;
+		try {
+			conn = getconnection();
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()){
+				if(rs.getString("state").equals("borrow")){
+					Record record = new Record();
+					//System.out.println(rs.getString("bookName"));
+					record.setBookName(rs.getString("bookName"));
+					record.setUsername(rs.getString("username"));
+					record.setTime(rs.getString("time"));
+					record.setState("state");
+					list.add(record);
+				}
+				
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
+	public static Boolean saveRecord(Record record){
+		String sql ="insert into records(bookName,userName,time,state) values('"+record.getBookName()+"','"+record.getUsername()+"','"+record.getTime()+"','"+record.getState()+"');";
+		try {
+			Connection conn=getconnection();
+			Statement stmt =conn.createStatement();
+			int rs=stmt.executeUpdate(sql);
+			
+			stmt.close();
+			conn.close();
+			if(rs>0){
+				System.out.println("insert records Success "+rs);
+				return true;
+				
+			}else{
+				System.out.println("update fail");
+				return false;
+			}
+		} catch (SQLException e) {
+		
+			e.printStackTrace();
+		}
+		return null;
+	}
 }
