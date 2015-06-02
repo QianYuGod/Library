@@ -180,6 +180,26 @@ public class DBUtils{
 		}
 	}
 	
+	public static List<String> getNameList(){
+		List <String> list = new ArrayList<String>();
+		String sql = "select userName from users";
+		Connection conn;
+		try {
+			conn = getconnection();
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()){
+				list.add(rs.getString("userName"));
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
 	//-------------------------------------------------book----------------
 	public static void addBook(Book book){
 		String sql ="insert into books(bookName,bookNumber,bookAuthor,bookPublicHouse,bookShelf,bookInfo,bookState) values('"+book.getBookName()+"','"+book.getBookNumber()+"','"+book.getBookAuthor()+"','"+book.getBookPublicHouse()+"','"+book.getBookShelf()+"','"+book.getBookInfo()+"','"+book.getBookState()+"');";
