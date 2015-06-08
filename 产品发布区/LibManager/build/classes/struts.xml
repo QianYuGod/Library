@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<constant name="struts.devMode" value="false"/>
+
+
+<package name="ManagerOperate" extends="struts-default" namespace="/">
+	<action name="login" class="action.LoginAction" method="execute">
+		<result name="success">/page/Menu.jsp</result>
+		<result name="register">/page/register.jsp</result>
+		<result name="login">/page/Login.jsp</result>
+		<result name="menu">/wsfpage/menu.jsp</result>
+		<result name="borrow"></result>
+	</action>
+	
+
+	<action name="menu" class="action.MenuAction" method="execute">
+		<result name="bookManage_Manager">/page/BookManage_Manager.jsp</result>
+		<result name="userManage_Manager">/library/select.jsp</result>
+		<result name="bookManage_NormalUser">/ys/index.jsp</result>
+	</action>
+	<action name="bookManage" class="action.BookManage" method="execute">
+		<result name="BookAdd">/page/BookAdd.jsp</result>
+		<result name="BookInfo">/page/BookInfo.jsp</result>
+		<result name="BookAlter">/page/BookAlter.jsp</result>
+		<result name="success">/page/Menu.jsp</result>
+	</action>
+	<action name="Operate" method="execute" class="action.Operate">
+		<result name="borrow">/wsfpage/borrow.jsp</result>
+		<result name="return">/wsfpage/return.jsp</result>
+		<result name="success">/wsfpage/success.jsp</result>
+		<result name="success2">/wsfpage/success2.jsp</result>
+		</action>
+		
+	<action name="operate_select" class="action.selectAction" method="execute">
+		<result name="user_search">/library/userSearch.jsp</result>
+		<result name="user_modify">/library/userModify.jsp</result>
+		<result name="user_delete">/library/userDelete.jsp</result>
+		</action>
+	<action name="userSearch" class="action.searchAction" method="execute">
+		<result name="success">/library/displayinfo.jsp</result>
+		<result name="fail">/library/error.jsp</result></action>
+	<action name="userModify" class="action.modifyAction" method="execute">
+		<result name="modify">/library/userModify.jsp</result>
+		<result name="success">/library/displayinfo.jsp</result>
+		<result name="fail">/library/error.jsp</result></action>
+	<action name="userDelete" class="action.deleteAction" method="execute">
+		<result name="success">/library/deleteSuccess.jsp</result>
+		<result name="fail">/library/error.jsp</result></action>
+		
+</package>
+
+<package name="modify" extends="struts-default" namespace="/modify">
+		<action name="modifyPassword" class="action.ModifyUserAction" method="modifyPassword">
+			<result type="redirect">/ys/index.jsp</result>
+		</action>
+		<action name="toModifyPassword" class="action.ModifyUserAction" method="toModifyPassword">
+			<result >/ys/ModifyPassword.jsp</result>
+		</action>
+		<action name="toModifyName" class="action.ModifyUserAction" method="toModifyName">
+			<result >/ys/ModifyName.jsp</result>
+		</action>
+		<action name="modifyName" class="action.ModifyUserAction" method="modifyName">
+			<result type="redirect">/ys/index.jsp</result>
+			<result name="failed" type="redirect">/ys/ModifyName.jsp</result>
+		</action>
+		<action name="editInfo" class="action.ModifyUserAction" method="editInfo">
+			<result type="redirect">/ys/index.jsp</result>
+			<result name="Failed" type="redirect">/ys/EditInfo.jsp</result>
+		</action>
+		<action name="toEditInfo" class="action.ModifyUserAction" method="toEditInfo">
+			<result >/ys/EditInfo.jsp</result>
+		</action>
+		<action name="borrowReturn" class="action.ModifyUserAction" method="borrowReturn">
+			<result >/ys/BorrowReturn.jsp</result>
+		</action>
+	</package>
+	
+	<package name="verify" extends="struts-default" namespace="/verify">
+		<action name="verifyPassword" class="action.VerifyAction" method="verifyPassword">
+			
+		</action>
+		<action name="verifyModifyPassword" class="action.VerifyAction" method="verifyModifyPassword">
+			<result name="Failed" type="redirect">/ys/ModifyPassword.jsp</result>
+			<result type="redirect">/modify/modifyPassword.action?password=${newPassword}</result>
+		</action>
+		<action name="nameVerify" class="action.VerifyAction" method="nameVerify">
+		</action>
+	</package>
+</struts>    
